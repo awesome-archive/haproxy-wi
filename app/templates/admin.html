@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% from 'include/input_macros.html' import input %}
+{% from 'include/input_macros.html' import input, select %}
 <style>
 .container {
 	margin-right: 0;
@@ -11,52 +11,34 @@
 {% include 'include/del_confirm.html' %}
 <div id="tabs">
 	<ul>
-		<li><a href="#users">Users</a></li>
-		<li><a href="#groups">Groups</a></li>
-		<li><a href="#servers">Servers</a></li>
-		<li><a href="#ssh">SSH credentials</a></li>
-		<li><a href="#checker">Checker</a></li>
-		<li><a href="#settings">Settings</a></li>
-		<li><a href="#updatehapwi">Update</a></li>
+		<li><a href="#users" title="Admin area: Manage users - HAProxy-WI">Users</a></li>
+		<li><a href="#groups" title="Admin area: Manage groups - HAProxy-WI">Groups</a></li>
+		<li><a href="#servers" title="Admin area: Manage servers - HAProxy-WI">Servers</a></li>
+		<li><a href="#ssh" title="Admin area: Manage SSH credentials - HAProxy-WI">SSH credentials</a></li>
+		<li><a href="#checker" title="Admin area: Manage checker - HAProxy-WI">Checker</a></li>
+		<li><a href="#settings" title="Admin area: Manage HAProxy-WI settings - HAProxy-WI">Settings</a></li>
+		<li><a href="#services" title="Admin area: Manage HAProxy-WI services - HAProxy-WI">Services</a></li>
+		<li><a href="#updatehapwi" title="Admin area: Update HAProxy-WI - HAProxy-WI">Update</a></li>
+		<li><a href="#backup" title="Admin area: Backup configs - HAProxy-WI">Backup</a></li>
+		<li><a href="#installmon" title="Servers: Monitoring service installation - HAProxy-WI">Monitoring installation</a></li>
 		{% include 'include/login.html' %}
 	</ul>
+	<ul id='browse_histroy'></ul>
 	<div id="users">
 		<table class="overview" id="ajax-users">
-			<tr class="overviewHead">
-				<td class="padding10 first-collumn">Login name</td>
-				<td>Password</td>
-				<td>Active</td>
-				<td>Email</td>
-				<td>Role</td>
-				<td>Group</td>
-				<td></td>
-				<td></td>
+			<thead>
+				<tr class="overviewHead">
+				<th class="padding10 first-collumn">Login name</th>
+				<th style="width: 10%">Password</th>
+				<th style="width: 10%">Active</th>
+				<th style="width: 20%">Email</th>
+				<th style="width: 10%">Role</th>
+				<th style="width: 100%">Group</th>
+				<th></th>
+				<th></th>
 			</tr>
-			<tr>
-			<script>
-				$( function() {
-				{% for user in users %}
-					$("#role-{{user.0}}" ).selectmenu({
-						  width: 100
-						});
-					$("#usergroup-{{user.0}}" ).selectmenu({
-						  width: 100
-						});
-					
-				{% endfor %}
-				{% for server in servers %}
-					$("#servergroup-{{ server.0}}" ).selectmenu({
-						  width: 100
-						});
-					$("#slavefor-{{server.0}}" ).selectmenu({
-						  width: 130
-						});
-					$("#credentials-{{server.0}}" ).selectmenu({
-						  width: 150
-						});
-				{% endfor %}
-				});
-			</script>
+			</thead>
+			<tbody>
 		{% for user in users %}
 			<tr id="user-{{user.0}}" class="{{ loop.cycle('odd', 'even') }}">
 				{% include 'include/admin_users.html' %}
@@ -73,16 +55,7 @@
 					</select>
 				</td>
 				<td>
-					<select id="usergroup-{{user.0}}" name="usergroup-{{user.0}}">
-						<option disabled selected>Choose group</option>
-						{% for group in groups %}
-							{% if user.5 == group.0|string() %}
-								<option value="{{ group.0 }}" selected>{{ group.1 }}</option>
-							{% else %}
-								<option value="{{ group.0 }}">{{ group.1 }}</option>
-							{% endif %}
-						{% endfor %}
-					</select>
+					<span title="Change user groups" style="cursor: pointer; margin-left: 15px;" class="div-pic" onclick="openChangeUserGroupDialog('{{user.0}}')">
 				</td>
 				<td>
 					<a class="add" onclick="cloneUser({{user.0}})" id="clone-{{user.0}}" title="Clone {{user.1}}" style="cursor: pointer;"></a>
@@ -92,17 +65,20 @@
 				</td> 
 			</tr>
 		{% endfor %}
+		<tbody>
 		</table>
 		<br /><span class="add-button" title="Add user" id="add-user-button">+ Add</span>
 		<br /><br />
 	</div>
 	<div id="groups">
 		<table class="overview" id="ajax-group">
+			<thead>
 			<tr class="overviewHead">
-				<td class="padding10 first-collumn">Name</td>
-				<td>Description</td>
-				<td></td>
+				<th class="padding10 first-collumn">Name</th>
+				<th style="width: 100%;">Description</th>
+				<th></th>
 			</tr>
+			<tbody>
 		{% for group in groups %}
 			<tr id="group-{{ group.0 }}" class="{{ loop.cycle('odd', 'even') }}"> 
 			{% if group.1 == "All" %}
@@ -111,13 +87,15 @@
 				<td></td>
 			{% else %}
 				<td class="padding10 first-collumn">
-					<input type="text" id="name-{{ group.0 }}" value="{{ group.1 }}" class="form-control">
+					{% set id = 'name-' + group.0|string() %}
+					{{ input(id, value=group.1) }}
 				</td>
-				<td style="width: 100%;">
+				<td>
+					{% set id = 'descript-' + group.0|string() %}					
 					{% if group.2  != "None" %}
-						<input type="text" id="descript-{{ group.0 }}" value="{{ group.2 }}" class="form-control" size="60">
+						{{ input(id, value=group.2, size='60') }}
 					{% else %}
-						<input type="text" id="descript-{{ group.0 }}" value="" class="form-control" size="60">
+						{{ input(id, value='', size='60') }}
 					{% endif %}
 				</td>
 				<td>
@@ -126,59 +104,50 @@
 			{% endif %}
 			</tr>
 		{% endfor %}
+			</tbody>
 		</table>
 		<br /><span class="add-button" title="Add group" id="add-group-button">+ Add</span>
 		<br /><br />
-		<table class="overview" id="group-add-table" style="display: none;">
-			<tr class="overviewHead">
-				<td class="padding10 first-collumn">New group name</td>
-				<td>Description</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td class="padding10 first-collumn">
-					{{ input('new-group-add') }}
-				</td>
-				<td>
-					{{ input('new-desc', size="60") }}
-				</td>
-				<td>
-					<a class="add-admin" id="add-group" title="Add new group" style="cursor: pointer;"></a>
-				</td>
-			</tr>
-		</table>
 		<div class="add-note addName alert-info" style="width: inherit; margin-right: 15px;">
 			 How to setup groups you can watch in this video <a href="https://haproxy-wi.org/description.py?description=setup" title="How to setup servers, group and SSH credentials" target="_blank">here</a>
 		</div>
 	</div>
 	<div id="servers">
 		<table class="overview" id="ajax-servers">
+			<thead>
 			<tr class="overviewHead">
-				<td class="padding10 first-collumn">Hostname</td>
-				<td class="ip-field">IP</td>
-				<td class="checkbox-head"><span title="SSH port">Port</span></td></td>
-				<td class="group-field">Group</td>
-				<td class="checkbox-head">Enable</td>
-				<td class="checkbox-head"><span title="Vitrual IP, something like VRRP">Virt</span></td>
-				<td class="checkbox-head"><span title="Alert if backend change status. Before enable add Telgram chanel at Checker tab">Alert</span></td>
-				<td class="checkbox-head"><span title="Enable save and show metrics">Metrics</span></td>
-				<td class="checkbox-head"><span title="Keep start HAProxy service if down">Start</span></td>
-				<td class="slave-field"><span title="Actions with master config will automatically apply on slave">Slave for</span></td>
-				<td class="cred-field">Credentials</td>
-				<td>Description</td>
-				<td></td>
-				<td></td>
-			</tr>						
+				<th class="padding10 first-collumn">Hostname</th>
+				<th class="ip-field" style="width: 5%">IP</th>
+				<th class="checkbox-head" style="width: 5%"><span title="SSH port">Port</span></th>
+				<th class="group-field" style="width: 10%">Group</th>
+				<th class="checkbox-head" style="width: 5%">Enabled</th>
+				<th class="checkbox-head" style="width: 5%">
+					<span title="Virtual IP, something like VRRP">Virt</span>
+				</th>
+				<th class="checkbox-head" style="width: 5%">HAProxy</th>
+				<th class="checkbox-head" style="width: 5%">Nginx</th>
+				<th class="slave-field" style="width: 10%">
+					<span title="Actions with the master config will automatically apply on the slave">Slave for</span>
+				</th>
+				<th class="cred-field" style="width: 15%">Credentials</th>
+				<th style="width: 100%">Description</th>
+				<th></th>
+				<th></th>
+			</tr>	
+			</thead>
+			<tbody>
 		{% for server in servers %}
 			<tr id="server-{{server.0}}" class="{{ loop.cycle('odd', 'even') }}">
 				<td class="padding10 first-collumn">
-					<input type="text" id="hostname-{{server.0}}" value="{{server.1}}" class="form-control">
+					{% set id = 'hostname-' + server.0|string() %}
+					{{ input(id, value=server.1, size='10') }}
 				</td>
 				<td>
-					<input type="text" id="ip-{{server.0}}" value="{{server.2}}" size="14" class="form-control">
+					<span id="ip-{{server.0}}" style="margin-right: 6px;">{{server.2}}</span>
 				</td>
 				<td>
-					<input type="text" id="port-{{server.0}}" value="{{server.10}}" size="1" class="form-control">
+					{% set id = 'port-' + server.0|string() %}
+					{{ input(id, value=server.10, size='2') }}
 				</td>
 				<td>
 					<select id="servergroup-{{server.0}}" name="servergroup-{{server.0}}">
@@ -195,9 +164,11 @@
 				{% include 'include/admin_servers.html' %}
 			</tr>
 		{% endfor %}
+			</tbody>
 		</table>
 		<br /><span class="add-button" title="Add server" id="add-server-button">+ Add</span>
 		<br /><br />
+		<div id="checkSshConnect"></div>
 		<div class="add-note addName alert-info" style="width: inherit; margin-right: 15px;">
 			You can read the description of all parameters <a href="https://haproxy-wi.org/description.py?description=servers" title="Servers description" target="_blank">here</a>
 			or watch video <a href="https://haproxy-wi.org/description.py?description=setup" title="How to setup servers, group and SSH credentials" target="_blank">here</a>
@@ -205,125 +176,7 @@
 	</div>
 
 	<div id="ssh">
-		<table id="ssh_enable_table" class="overview">
-			<tr class="overviewHead" style="width: 50%;">
-				<td class="padding10 first-collumn" style="width: 15%;">
-					<span title="It's just name alias. This alias will be use in 'Servers' page for choose credentials">Name<span>
-				</td>
-				<td class="padding10 first-collumn" style="width: 25%;">
-					<span title="If it is enabled, the key will be used, if turned off - the password. Do not forget to download the keys to all servers or install the sudo without a password">SSH key</span>
-				</td>
-				<td>Group</td>
-				<td>
-					<span title="Enter SSH user name. If SSH key disabled, enter password for ssh user">Credentials</span>
-				</td>
-				<td></td>
-			</tr>
-			{% for ssh in sshs %}
-				<tr style="width: 50%;" id="ssh-table-{{ssh.0}}" class="{{ loop.cycle('odd', 'even') }}">
-					<td class="first-collumn">
-						<input type="text" id="ssh_name-{{ssh.0}}" class="form-control" value="{{ssh.1}}" style="margin-bottom: 23px;">	
-					</td>
-					<td class="first-collumn" valign="top" style="padding-top: 15px;">
-						{% if ssh.2 == 1 %}
-							<label for="ssh_enable-{{ssh.0}}">Enable SSH key</label><input type="checkbox" id="ssh_enable-{{ssh.0}}" checked>
-						{% else %}
-							<label for="ssh_enable-{{ssh.0}}">Enable SSH key</label><input type="checkbox" id="ssh_enable-{{ssh.0}}">
-						{% endif %}
-					</td>
-					<td>
-						<select id="sshgroup-{{ssh.0}}" name="sshgroup-{{ssh.0}}">
-							{% for group in groups %}
-								{% if ssh.5 == group.0 %}
-									<option value="{{ group.0 }}" selected>{{ group.1 }}</option>
-								{% else %}
-									<option value="{{ group.0 }}">{{ group.1 }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
-					</td>
-					<td style="padding-top: 15px;">
-						<p>
-							<input type="text" id="ssh_user-{{ssh.0}}" class="form-control" value="{{ssh.3}}">		
-						</p>
-						{% if ssh.2 == 1 %}
-							<input type="password" id="ssh_pass-{{ssh.0}}" class="form-control" value="{{ssh.4}}" style="display: none;">
-						{% else %}
-							<input type="password" id="ssh_pass-{{ssh.0}}" class="form-control" value="{{ssh.4}}">
-						{% endif %}
-						<br>
-					</td>
-					<td>
-						<a class="delete" onclick="confirmDeleteSsh({{ssh.0}})" title="Delete SSH credentials {{ssh.1}}" style="cursor: pointer;"></a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
-		<br /><span class="add-button" title="Add ssh" id="add-ssh-button">+ Add</span>
-		<br /><br />
-		<table class="overview" id="ssh-add-table" style="display: none;">
-			<tr class="overviewHead">
-				<td class="padding10 first-collumn" style="width: 15%;">Name</td>
-				<td class="padding10 first-collumn" style="width: 25%;">SSH key</td>
-				<td>Group</td>
-				<td>Credentials</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td class="padding10 first-collumn">
-					{{ input('new-ssh-add') }}	
-				</td>
-				<td>
-					<label for="new-ssh_enable">Enable SSH key</label><input type="checkbox" id="new-ssh_enable" checked>
-				</td>
-				<td>
-					<select id="new-sshgroup" name="new-sshgroup">
-						{% for group in groups %}
-							<option value="{{ group.0 }}">{{ group.1 }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td style="padding-top: 15px;">
-					<p>
-						{{ input('ssh_user', value=ssh_user) }}	
-					</p>
-						{{ input('ssh_pass', type='password', value=ssh_pass, style="display: none;") }}
-					<br>
-				</td>
-				<td>
-					<a class="add-admin" id="add-ssh" title="Add new SSH credentials" style="cursor: pointer;"></a>
-				</td>
-			</tr>
-		</table>
-		<table id="ssh_key">
-			<tr class="overviewHead" style="width: 50%;">
-				<td class="padding10 first-collumn" style="width: 25%;">Upload SSH Key</td>
-				<td>
-					<span title="Private key. Note: The public key must be pre-installed on all servers to which you plan to connect">Key</span>
-				</td>
-				<td></td>
-			</tr>
-			<tr style="width: 50%;">
-				<td class="first-collumn" valign="top" style="padding-top: 15px;">
-					<select id="ssh-key-name">
-						<option disabled selected>Choose credentials</option>
-						{% for ssh in sshs %}
-							<option value={{ssh.1}}>{{ssh.1}}</option>	
-						{% endfor %}
-					</select>
-				</td>
-				<td style="padding-top: 15px;">
-					<textarea id="ssh_cert" cols="50" rows="5"></textarea><br /><br />
-					<a class="ui-button ui-widget ui-corner-all" id="ssh_key_upload" title="Upload ssh key" onclick="uploadSsh()">Upload</a>		
-				</td>
-				<td></td>
-			</tr>
-		</table>
-		<div id="ajax-ssh"></div>
-		<div class="add-note addName alert-info" style="width: inherit; margin-right: 15px;">
-			You can read the description of all parameters <a href="https://haproxy-wi.org/description.py?description=creds" title="Servers description" target="_blank">here</a>
-			or watch video <a href="https://haproxy-wi.org/description.py?description=setup" title="How to setup servers, group and SSH credentials" target="_blank">here</a>
-		</div>
+		{% include 'include/admin_ssh.html' %}
 	</div>
 	
 	<div id="checker">
@@ -332,18 +185,20 @@
 				<td class="padding10 first-collumn" style="width: 25%;">
 					<span title="Token that gave you @father_bot">Token</span>
 				</td>
-				<td>Channel name</td>
-				<td>Group</td>
+				<td style="width: 25%;">Channel name</td>
+				<td style="width: 100%;">Group</td>
 				<td></td>
 				<td></td>
 			</tr>
 			{% for telegram in telegrams %}
 				<tr id="telegram-table-{{telegram.0}}" class="{{ loop.cycle('odd', 'even') }}">
-					<td class="first-collumn" style="padding-top: 20px;">
-						<input type="text" id="telegram-token-{{telegram.0}}" class="form-control" value="{{telegram.1}}" style="margin-bottom: 23px;">	
+					<td class="padding10 first-collumn">
+						{% set id = 'telegram-token-' + telegram.0|string() %}
+						{{ input(id, value=telegram.1, size='30') }}
 					</td>
 					<td>
-						<input type="text" id="telegram-chanel-{{telegram.0}}" class="form-control" value="{{telegram.2}}">		
+						{% set id = 'telegram-chanel-' + telegram.0|string() %}
+						{{ input(id, value=telegram.2) }}	
 					</td>
 					<td>
 						<select id="telegramgroup-{{telegram.0}}" name="telegramgroup-{{telegram.0}}">
@@ -358,7 +213,7 @@
 						</select>
 					</td>
 					<td>
-						<a class="add" onclick="cloneTelegram({{telegram.0}})" id="clone-{{telegram.0}}" title="Clone {{telegram.1}}" style="cursor: pointer;"></a>
+						<a class="add" onclick="cloneTelegram({{telegram.0}})" id="clone-{{telegram.0}}" title="Clone {{telegram.2}}" style="cursor: pointer;"></a>
 					</td> 
 					<td>
 						<a class="delete" onclick="confirmDeleteTelegram({{telegram.0}})" title="Delete channel {{telegram.2}}" style="cursor: pointer;"></a>
@@ -368,35 +223,6 @@
 		</table>
 		<br /><span class="add-button" title="Add telegram channel" id="add-telegram-button">+ Add</span>
 		<br /><br />
-		<table class="overview" id="telegram-add-table" style="display: none;">
-			<tr class="overviewHead">
-				<td class="padding10 first-collumn" style="width: 25%;">
-					<span title="Token that gave you @father_bot">Token</span>
-				</td>
-				<td>Chanel name</td>
-				<td>Group</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td class="padding10 first-collumn">
-					{{ input('telegram-token-add') }}
-				</td>
-				<td>
-					{{ input('telegram-chanel-add') }}	
-				</td>
-				<td>
-					<select id="new-telegram-group-add" name="new-telegram-group-add">
-						<option disabled selected value="0">Choose group</option>
-						{% for group in groups %}
-							<option value="{{ group.0 }}">{{ group.1 }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td>
-					<a class="add-admin"  id="add-telegram" title="Add new Telegram channel" style="cursor: pointer;"></a>
-				</td>
-			</tr>
-		</table>
 		<div id="ajax-telegram"></div>
 		<div class="add-note addName alert-info" style="width: inherit; margin-right: 15px;">
 			You can read the description of all parameters <a href="https://haproxy-wi.org/description.py?description=checker" title="Servers description" target="_blank">here</a>
@@ -404,50 +230,54 @@
 	</div>
 	
 	<div id="settings">
-		<table id="settings">
+		{% include 'include/admin_settings.html' %}
+	</div>
+	
+	<div id="services">
+		<table id="services_table" class="overview">
 			<tr class="overviewHead">
-				<td class="padding10 first-collumn" style="width: 10%;">
-					Parameter
+				<td class="padding10 first-collumn" style="width: 25%;">
+					Service
 				</td>
-				<td>
-					Value
-				</td>	
-				<td>
-					Description 
+				<td class="padding10 first-collumn" style="width: 35%;">
+					Actions
 				</td>
+				<td>Description</td>
 			</tr>
-			{% set section = namespace(section='') %}
-			{% for set in settings %}
-			{% if section.section|string() != set.2|string() %}
-				<th colspan="3"><h3>{{ set.2 }} section</h3></th>
-			{% endif %}
-			{% set section.section = set.2 %}	
-			<tr class="{{ loop.cycle('odd', 'even') }}">
-				<td class="addName">
-					<a href="#{{set.0}}" title="{{set.0}}" style="color: #000;">{{set.0}}</a>
-				</td>
-				<td class="addOption">
-					{% if set.0 == 'ldap_password' %}
-						{% if set.1 == 'None' %}
-								<input type="password" name="{{set.0}}" id="{{set.0}}" value="" title="" size="25" class="form-control">
+			{% for s in services %}
+				<tr class="{{ loop.cycle('odd', 'even') }}" id="{{s.0}}">
+					<td class="padding10 first-collumn">
+						{% if s.1.0 == 'active' %}
+							<span title="{{s.0}} is started"><span class="serverUp server-status"></span></span>
+						{% else %}
+							{% if s.1.0 == 'inactive' or s.1.0 == 'failed' %}
+							<span title="{{s.0}} is stoped"><span class="serverDown server-status"></span></span>
 							{% else %}
-								<input type="password" name="{{set.0}}" id="{{set.0}}" value="{{set.1}}" title="" size="25" class="form-control">
+							<span title="{{s.0}} is not installed"><span class="serverNone server-status"></span></span>
 							{% endif %}
-					{% else %}
-						{% if set.1 == 'None' %}
-							<input type="text" name="{{set.0}}" id="{{set.0}}" value="" title="" size="25" class="form-control">
-						{% else %}	
-							<input type="text" name="{{set.0}}" id="{{set.0}}" value="{{set.1}}" title="" size="25" class="form-control">
 						{% endif %}
-					{% endif %}
-				</td>
-				<td class="addOption">
-					{{set.3}}
-				</td>
-			</tr>
+						{{s.0}}
+					</td>
+					<td class="padding10 first-collumn">
+						<a id="start-{{ s.0 }}" class="start" title="Start and enable {{s.0}} service">
+							<span class="service-start" onclick="confirmAjaxServiceAction('start', '{{s.0}}')"></span>
+						</a>
+						<a id="restart-{{ s.2 }}" class="restart" title="Restart {{s.0}} service">
+						<span class="service-reload service-restart" onclick="confirmAjaxServiceAction('restart', '{{s.0}}')"></span>
+					</a>
+						<a id="stop-{{ s.0 }}" class="stop" title="Stop and disable {{s.0}} service">
+							<span class="service-stop" onclick="confirmAjaxServiceAction('stop', '{{s.0}}')"></span>
+						</a>
+					</td>
+					<td>
+						{{ s.2 }}
+					</td>
+				</tr>
 			{% endfor %}
-
 		</table>
+		<div class="add-note addName alert-info" style="width: inherit; margin-right: 15px;">
+			You can read about services <a href="https://haproxy-wi.org/services.py" title="HAProxy-WI services" target="_blank">here</a>
+		</div>
 	</div>
 	
 	<div id="updatehapwi">
@@ -485,81 +315,64 @@
 		</div>
 		<div id="ajax-update"></div>
 	</div>
+
+	<div id="backup">
+		{% include 'include/admin_backup.html' %}
+	</div>
+
+	<div id="installmon">
+		{% include 'include/mon_installation.html' %}
+	</div>
 </div>
-<div id="user-add-table" style="display: none;">	
-	<table class="overview">
-		{% include 'include/admin_add_user.html' %}
-		<tr>
-			<td class="padding20">
-				Role
-				<span class="need-field">*</span>
-			</td>
-			<td>
-				<select id="new-role" name="new-role">
-					<option disabled selected>Choose role</option>
-					{% for role in roles %}
-						<option value="{{ role.1 }}">{{ role.1 }}</option>
-					{% endfor %}
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="padding20">
-				Group
-				<span class="need-field">*</span>
-			</td>
-			<td>
-				<select id="new-group" name="new-group">
-					<option disabled selected>Choose group</option>
-					{% for group in groups %}
-						<option value="{{ group.0 }}">{{ group.1 }}</option>
-					{% endfor %}
-				</select>
-			</td>
-		</tr>
-	</table>
-</div>
-<div id="server-add-table" title="View certificate " style="display: none;">	
-	<table class="overview">
-		{% include 'include/admin_add_server.html' %}
-		<tr>
-			<td class="padding20">
-				Credentials
-				<span class="need-field">*</span>
-			</td>
-			<td>
-				<select id="credentials" required>
-					<option disabled selected>Choose credentials</option>
-					{% for ssh in sshs %}
-						<option value="{{ssh.0}}">{{ssh.1}}</option>
-					{% endfor %}
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="padding20">
-				Group
-				<span class="need-field">*</span>
-			</td>
-			<td>
-				<select id="new-server-group-add" name="new-server-group-add">
-					<option disabled selected value="0">Choose group</option>
-					{% for group in groups %}
-						<option value="{{ group.0 }}">{{ group.1 }}</option>
-					{% endfor %}
-				</select>
-			</td>
-		</tr>
-		
-	</table>
-</div>	
+{% include 'include/admins_dialogs.html' %}
 {% include 'include/change_pass_form.html' %}
+<div id="change-user-groups-dialog" style="display: none;">
+	<div id="change-user-groups-form"></div>
+</div>
 <style>
-.ui-selectmenu-button.ui-button {
-    width: 10em;
-}
-.first-collumn {
-    width: 10%;
-}
+	.ui-selectmenu-button.ui-button {
+		width: 10em;
+	}
+	.first-collumn {
+		width: 10%;
+	}
 </style>
+<script>
+	$( function() {
+		{% for user in users %}
+			$("#role-{{user.0}}" ).selectmenu({
+				width: 100
+			});
+		{% endfor %}
+		{% for server in servers %}
+			$("#servergroup-{{ server.0}}" ).selectmenu({
+				width: 100
+			});
+			$("#slavefor-{{server.0}}" ).selectmenu({
+				width: 130
+			});
+			$("#credentials-{{server.0}}" ).selectmenu({
+				width: 150
+			});
+		{% endfor %}
+		{% for ssh in sshs %}
+			if (window.matchMedia('(max-width: 1280px)').matches) {
+				$("#sshgroup-{{ ssh.0}}" ).selectmenu({
+					width: 100
+				});
+			}
+		{% endfor %}
+		{% for server in backups %}
+			$("#backup-time-{{ server.0}}" ).selectmenu({
+				width: 100
+			});
+			$("#backup-type-{{server.0}}" ).selectmenu({
+				width: 130
+			});
+			$("#backup-credentials-{{server.0}}" ).selectmenu({
+				width: 150
+			});
+		{% endfor %}
+	});
+</script>
 {% endblock %}

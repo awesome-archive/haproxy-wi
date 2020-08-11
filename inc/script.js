@@ -7,16 +7,109 @@ $( function() {
    $('.menu li ul li').each(function () {
        var link = $(this).find('a').attr('href');
 	   var link2 = link.split('/')[2]
-       if (cur_url[0] == link2) {
-           $(this).parent().css('display', 'contents');
-           $(this).parent().css('font-size', '13px');
-           $(this).parent().css('top', '0');
-           $(this).parent().css('left', '0');
-           $(this).parent().children().css('margin-left', '-20px');
+	   if (cur_url[1] == null) {
+		cur_url[1] = 'haproxy';
+	   }
+       if (cur_url[0] == link2 && cur_url[1].split('&')[0] != 'service=keepalived' && cur_url[1].split('&')[0] != 'service=nginx') {
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'versions.py' && cur_url[1].split('&')[0] == 'service=keepalived' && link2 == 'versions.py?service=keepalived'){ 
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'config.py' && cur_url[1].split('&')[0] == 'service=keepalived' && link2 == 'config.py?service=keepalived'){
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'versions.py' && cur_url[1].split('&')[0] == 'service=nginx' && link2 == 'versions.py?service=nginx'){ 
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'config.py' && cur_url[1].split('&')[0] == 'service=nginx' && link2 == 'config.py?service=nginx'){
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'hapservers.py' && cur_url[1].split('&')[0] == 'service=nginx' && link2 == 'hapservers.py?service=nginx'){
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'viewsttats.py' && cur_url[1].split('&')[0] == 'service=nginx' && link2 == 'viewsttats.py?service=nginx'){
+			$(this).parent().css('display', 'contents');
+			$(this).parent().css('font-size', '13px');
+			$(this).parent().css('top', '0');
+			$(this).parent().css('left', '0');
+			$(this).parent().children().css('margin-left', '-20px');
+			$(this).parent().find('a').css('padding-left', '20px');
+			$(this).find('a').css('padding-left', '30px');
+			$(this).find('a').css('border-left', '4px solid #5D9CEB');
+		} else if(cur_url[0] == 'smon.py' && cur_url[1].split('&')[0] == 'action=view' && link2 == 'smon.py?action=view'){
+		   $(this).parent().css('display', 'contents');
+		   $(this).parent().css('font-size', '13px');
+		   $(this).parent().css('top', '0');
+		   $(this).parent().css('left', '0');
+		   $(this).parent().children().css('margin-left', '-20px');
 		   $(this).parent().find('a').css('padding-left', '20px');
 		   $(this).find('a').css('padding-left', '30px');
 		   $(this).find('a').css('border-left', '4px solid #5D9CEB');
-       }
+	   	} else if(cur_url[0] == 'smon.py' && cur_url[1].split('&')[0] == 'action=add' && link2 == 'smon.py?action=add'){
+		   $(this).parent().css('display', 'contents');
+		   $(this).parent().css('font-size', '13px');
+		   $(this).parent().css('top', '0');
+		   $(this).parent().css('left', '0');
+		   $(this).parent().children().css('margin-left', '-20px');
+		   $(this).parent().find('a').css('padding-left', '20px');
+		   $(this).find('a').css('padding-left', '30px');
+		   $(this).find('a').css('border-left', '4px solid #5D9CEB');
+	   } else if(cur_url[0] == 'add.py' && cur_url[1].split('&')[0] == 'service=nginx#ssl' && link2 == 'add.py?service=nginx#ssl'){
+		   $(this).parent().css('display', 'contents');
+		   $(this).parent().css('font-size', '13px');
+		   $(this).parent().css('top', '0');
+		   $(this).parent().css('left', '0');
+		   $(this).parent().children().css('margin-left', '-20px');
+		   $(this).parent().find('a').css('padding-left', '20px');
+		   $(this).find('a').css('padding-left', '30px');
+		   $(this).find('a').css('border-left', '4px solid #5D9CEB');
+	   } else if(cur_url[0] == 'viewlogs.py' && cur_url[1].split('&')[0] == 'type=2' && link2 == 'viewlogs.py?type=2'){
+		   $(this).parent().css('display', 'contents');
+		   $(this).parent().css('font-size', '13px');
+		   $(this).parent().css('top', '0');
+		   $(this).parent().css('left', '0');
+		   $(this).parent().children().css('margin-left', '-20px');
+		   $(this).parent().find('a').css('padding-left', '20px');
+		   $(this).find('a').css('padding-left', '30px');
+		   $(this).find('a').css('border-left', '4px solid #5D9CEB');
+	   }
    });
 });
 
@@ -100,23 +193,28 @@ function autoRefreshStyle(autoRefresh) {
 	$('.auto-refresh-resume').css('display', 'none');		
 	$('.auto-refresh-pause').css('margin-left', "-25px");	
 	$('.auto-refresh-resume').css('margin-left', "-25px");		
+	$('#browse_histroy').css("border-bottom", "none");
 	$('.auto-refresh img').remove();
 }
 function setRefreshInterval(interval) {
 	if (interval == "0") {
-		Cookies.remove('auto-refresh');
-		pauseAutoRefresh();
-		$('.auto-refresh').prepend('<img src=/inc/images/update.png alt="restart" class="icon">');
-		$('.auto-refresh').css('margin-top', '-3px');
-		$('#1').text('Auto-refresh');
-		$('#0').text('Auto-refresh');
-		$('.auto-refresh-pause').css('display', 'none');
-		$('.auto-refresh-resume').css('display', 'none');
+		var autoRefresh = Cookies.get('auto-refresh');
+		if (autoRefresh !== undefined) {
+			Cookies.remove('auto-refresh');
+			pauseAutoRefresh();
+			$('.auto-refresh').prepend('<span class="service-reload auto-refresh-reload-icon"></span>');
+			$('.auto-refresh').css('font-size', '15px');
+			$('#1').text('Auto-refresh');
+			$('#0').text('Auto-refresh');
+			$('.auto-refresh-pause').css('display', 'none');
+			$('.auto-refresh-resume').css('display', 'none');
+			$.getScript("/inc/fontawesome.min.js")
+		}
 		hideAutoRefreshDiv();
 	} else {
 		clearInterval(intervalId);
-		Cookies.set('auto-refresh', interval, { expires: 365 });
-		Cookies.set('auto-refresh-pause', "0", { expires: 365 });
+		Cookies.set('auto-refresh', interval, { expires: 365, samesite: 'strict', secure: 'true' });
+		Cookies.set('auto-refresh-pause', "0", { expires: 365, samesite: 'strict', secure: 'true' });
 		startSetInterval(interval);
 		hideAutoRefreshDiv();
 		autoRefreshStyle(interval);
@@ -134,8 +232,8 @@ function startSetInterval(interval) {
 			if(interval < 60000) {
 				interval = 60000;
 			}
-			intervalId = setInterval('showOverview()', interval);
-			showOverview(); 
+			intervalId = setInterval('showOverview(ip, hostnamea)', interval);
+			showOverview(ip, hostnamea); 
 		} else if (cur_url[0] == "viewlogs.py") {
 			intervalId = setInterval('viewLogs()', interval);
 			viewLogs();
@@ -149,8 +247,8 @@ function startSetInterval(interval) {
 			if(interval < 60000) {
 				interval = 60000;
 			}
-			intervalId = setInterval('showOverviewWaf()', interval);
-			showOverviewWaf();
+			intervalId = setInterval('showOverviewWaf(ip, hostnamea)', interval);
+			showOverviewWaf(ip, hostnamea);
 			showWafMetrics();
 		} else if (cur_url[0] == "hapservers.py") {
 			if(interval < 60000) {
@@ -168,13 +266,13 @@ function pauseAutoRefresh() {
 	$(function() {
 		$('.auto-refresh-pause').css('display', 'none');
 		$('.auto-refresh-resume').css('display', 'inline');
-		Cookies.set('auto-refresh-pause', "1", { expires: 365 });
+		Cookies.set('auto-refresh-pause', "1", { expires: 365, samesite: 'strict', secure: 'true' });
 	});
 }	
 function pauseAutoResume(){
 	var autoRefresh = Cookies.get('auto-refresh');
 	setRefreshInterval(autoRefresh);
-	Cookies.set('auto-refresh-pause', "0", { expires: 365 });
+	Cookies.set('auto-refresh-pause', "0", { expires: 365, samesite: 'strict', secure: 'true' });
 }
 
 function hideAutoRefreshDiv() {
@@ -192,129 +290,47 @@ $( document ).ajaxComplete(function( event, request, settings ) {
 	$('#cover').fadeOut('fast');
 	NProgress.done();
 });
-function showOverview() {
-	showOverviewHapWI()
-	$.ajax( {
-		url: "options.py",
-		data: {
-			act: "overview",
-			token: $('#token').val()
-		},
-		beforeSend: function() {
-			$('#ajaxstatus').html('<img class="loading" src="/inc/images/loading.gif" />')
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajaxstatus").empty();
-			$("#ajaxstatus").html(data);
-			$.getScript('/inc/overview.js');
-		}					
-	} );
-}
-function showOverviewServer(name,ip,id) {
-	$.ajax( {
-		url: "options.py",
-		data: {
-			act: "overviewServers",
-			name: name,
-			serv: ip,
-			id: id,
-			page: 'hapservers.py',
-			token: $('#token').val()
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajax-server-"+id).empty();
-			$("#ajax-server-"+id).css('display', 'block');
-			$("#ajax-server-"+id).css('background-color', '#fbfbfb');
-			$("#ajax-server-"+id).css('border', '1px solid #A4C7F5');
-			$(".ajax-server").css('display', 'block');
-			$(".div-server").css('clear', 'both');
-			$(".div-pannel").css('clear', 'both');
-			$(".div-pannel").css('display', 'block');
-			$(".div-pannel").css('padding-top', '10px');
-			$(".div-pannel").css('height', '70px');
-			$("#div-pannel-"+id).insertBefore('#up-pannel')
-			$("#ajax-server-"+id).html(data);
-		}					
-	} );
-}
-function showOverviewWaf() {
-	if (cur_url[0] == "waf.py") {
-		$.getScript('/inc/chart.min.js');
-		showWafMetrics()
-	}
-	$.ajax( {
-		url: "options.py",
-		data: {
-			act: "overviewwaf",
-			page: cur_url[0],
-			token: $('#token').val()
-		},
-		beforeSend: function() {
-			if (cur_url[0] == "waf.py") {
-				var load_class = 'loading_full_page'
-			} else {
-				var load_class = 'loading'
-			}
-			$('#ajaxwafstatus').html('<img class="'+load_class+'" src="/inc/images/loading.gif" />')
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajaxwafstatus").empty();
-			$("#ajaxwafstatus").html(data);
-			$.getScript('/inc/overview.js');			
-			if (cur_url[0] == "waf.py") {
-				$.getScript('/inc/waf.js');
-				$( "input[type=submit], button" ).button();
-				$( "input[type=checkbox]" ).checkboxradio();
-			} else {
-				$('.first-collumn-wi').css('padding', '10px');
-			}
-		}					
-	} );
-}
-function showOverviewHapWI() {
-	$.ajax( {
-		url: "options.py",
-		data: {
-			act: "overviewHapwi",
-			token: $('#token').val()
-		},
-		beforeSend: function() {
-			$('#ajaxHapwi').html('<img class="loading_hapwi_overview" src="/inc/images/loading.gif" />')
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajaxHapwi").html(data);
-		}					
-	} );
-}
 function showStats() {
 	$.ajax( {
 		url: "options.py",
 		data: {
 			act: "stats",
 			serv: $("#serv").val(),
+			service: $("#service").val(),
 			token: $('#token').val()
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);			
-			window.history.pushState("Stats", "Stats", cur_url[0]+"?serv="+$("#serv").val());
-			wait();
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax").html(data);
+				window.history.pushState("Stats", "Stats", cur_url[0] + "?service=" + $("#service").val() + "&serv=" + $("#serv").val());
+				wait();
+			}
 		}					
 	} );
 }
 function openStats() {
 	var serv = $("#serv").val();
-	var url = "viewsttats.py?serv="+serv
+	if (cur_url[1] == "service=nginx") {
+		var url = "viewsttats.py?service=nginx&serv="+serv+"&open=open"
+	} else {	
+		var url = "viewsttats.py?serv="+serv+"&open=open"
+	}
 	var win = window.open(url, '_blank');
 	win.focus();
 }
 function openVersions() {
 	var serv = $("#serv").val();
-	var url = "versions.py?serv="+serv+"&open=open"
+	if (cur_url[1] == "service=keepalived") {
+		var url = "versions.py?service=keepalived&serv="+serv+"&open=open"
+	} else if (cur_url[1] == "service=nginx") {
+		var url = "versions.py?service=nginx&serv="+serv+"&open=open"
+	} else {	
+		var url = "versions.py?serv="+serv+"&open=open"
+	}
 	var win = window.open(url,"_self");
 	win.focus();
 }
@@ -325,10 +341,15 @@ function showLog() {
 	}
 	var rows = $('#rows').val()
 	var grep = $('#grep').val()
+	var exgrep = $('#exgrep').val()
 	var hour = $('#time_range_out_hour').val()
 	var minut = $('#time_range_out_minut').val()
 	var hour1 = $('#time_range_out_hour1').val()
 	var minut1 = $('#time_range_out_minut1').val()
+	var service = $('#service').val()
+	if (service == 'None') {
+		service = 'haproxy';
+	}
 	$.ajax( {
 		url: "options.py",
 		data: {
@@ -336,28 +357,43 @@ function showLog() {
 			serv: $("#serv").val(),
 			waf: waf,
 			grep: grep,
+			exgrep: exgrep,
 			hour: hour,
 			minut: minut,
 			hour1: hour1,
 			minut1: minut1,
+			service: service,
 			token: $('#token').val()
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);
-			window.history.pushState("Logs", "Logs", cur_url[0]+"?serv="+$("#serv").val()+
-																	'&rows='+rows+
-																	'&grep='+grep+
-																	'&hour='+hour+
-																	'&minut='+minut+
-																	'&hour1='+hour1+
-																	'&minut1='+minut1+
-																	'&waf='+waf);
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax").html(data);
+				window.history.pushState("Logs", "Logs", cur_url[0] + "?service=" + service + "&serv=" + $("#serv").val() +
+					'&rows=' + rows +
+					'&exgrep=' + exgrep +
+					'&grep=' + grep +
+					'&hour=' + hour +
+					'&minut=' + minut +
+					'&hour1=' + hour1 +
+					'&minut1=' + minut1 +
+					'&waf=' + waf);
+			}
 		}					
 	} );
 }
 function showMap() {
 	$("#ajax").empty();
+	try {
+		myCodeMirror.toTextArea();
+	} catch (e) {
+		console.log(e)
+	}
+	$("#saveconfig").remove();
+	$("h4").remove();
 	$("#ajax-compare").empty();
 	$("#config").empty();
 	$(".alert-info").empty();
@@ -371,29 +407,13 @@ function showMap() {
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);
-			window.history.pushState("Show map", "Show map", cur_url[0]+'?serv='+$("#serv").val()+'&showMap');
-		}					
-	} );
-}
-function showRuntime() {
-	if($('#save').prop('checked')) {
-		saveCheck = "on";
-	} else {
-		saveCheck = "";
-	}
-	$.ajax( {
-		url: "options.py",
-		data: {
-			servaction: $('#servaction').val(),
-			serv: $("#serv").val(),
-			servbackend: $("#servbackend").val(),
-			save: saveCheck,
-			token: $('#token').val()
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajaxruntime").html(data);
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax").html(data);
+				window.history.pushState("Show map", "Show map", cur_url[0] + '?serv=' + $("#serv").val() + '&showMap');
+			}
 		}					
 	} );
 }
@@ -404,17 +424,29 @@ function showCompare() {
 			serv: $("#serv").val(),
 			left: $('#left').val(),
 			right: $("#right").val(),
+			service: $("#service").val(),
 			token: $('#token').val()
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax").html(data);
+			}
 		}					
 	} );
 }
 function showCompareConfigs() {
 	$("#ajax").empty();
-	$("#config").empty();
+	try {
+		myCodeMirror.toTextArea();
+	} catch (e) {
+		console.log(e)
+	}
+	$("#saveconfig").remove();
+	$("h4").remove();
 	$(".alert-info").empty();
 	$.ajax( {
 		url: "options.py",
@@ -422,79 +454,116 @@ function showCompareConfigs() {
 			serv: $("#serv").val(),
 			act: "showCompareConfigs",
 			open: "open",
+			service: $("#service").val(),
 			token: $('#token').val()
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax-compare").html(data);
-			$( "input[type=submit], button" ).button();
-			$( "select" ).selectmenu();
-			window.history.pushState("Show compare config", "Show compare config", cur_url[0]+'?serv='+$("#serv").val()+'&showCompare');
-		}					
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax-compare").html(data);
+				$("input[type=submit], button").button();
+				$("select").selectmenu();
+				window.history.pushState("Show compare config", "Show compare config", cur_url[0] + '?service=' + $("#service").val() + '&serv=' + $("#serv").val() + '&showCompare');
+			}
+		}
 	} );
 }
 function showConfig() {
+	var service = $('#service').val();
 	$("#ajax").empty();
+	try {
+		myCodeMirror.toTextArea();
+	} catch (e) {
+		console.log(e)
+	}
+	$("#saveconfig").remove();
+	$("h4").remove();
 	$("#ajax-compare").empty();
 	$("#config").empty();
-	$(".alert-info").empty();
+	$(".alert").empty();
 	$.ajax( {
 		url: "options.py",
 		data: {
 			serv: $("#serv").val(),
 			act: "configShow",
+			service: service,
 			token: $('#token').val()
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);
-			$.getScript('/inc/configshow.js');
-			window.history.pushState("Show config", "Show config", cur_url[0]+'?serv='+$("#serv").val()+'&showConfig');
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#ajax").html(data);
+				$.getScript('/inc/configshow.js');
+				window.history.pushState("Show config", "Show config", cur_url[0] + "?service=" + service + "&serv=" + $("#serv").val() + "&showConfig");
+			}
 		}					
 	} );
 }
 function showUploadConfig() {
-	var view = $('#view').val();
-	if(view != "1") {
-		view = ""
-	}
+	var service = $('#service').val();
+	var configver = $('#configver').val();
+	var serv = $("#serv").val()
 	$.ajax( {
 		url: "options.py",
 		data: {
-			serv: $("#serv").val(),
+			serv: serv,
 			act: "configShow",
-			configver: $('#configver').val(),
+			configver: configver,
+			service: service,
 			token: $('#token').val(),
-			view: view 
 		},
 		type: "POST",
 		success: function( data ) {
-			$("#ajax").html(data);
-			if(view == "1") {
-				window.history.pushState("Show config", "Show config", cur_url[0]+"?serv="+$("#serv").val()+"&open=open&configver="+$('#configver').val()+"&view="+$('#view').val());
+			if (data.indexOf('error:') != '-1') {
+				toastr.error(data);
 			} else {
-				window.history.pushState("Show config", "Show config", cur_url[0]+"?serv="+$("#serv").val()+"&open=open&configver="+$('#configver').val());
+				toastr.clear();
+				$("#ajax").html(data);
+				window.history.pushState("Show config", "Show config", cur_url[0] + "?service=" + service + "&serv=" + serv + "&open=open&configver=" + configver);
+				$.getScript('/inc/configshow.js');
 			}
-			$.getScript('/inc/configshow.js');
 		}					
 	} );
 }
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+}
 function viewLogs() {
-	if($('#viewlogs').val() == 'haproxy-wi.error.log' || $('#viewlogs').val() == 'haproxy-wi.access.log') {
+	if($('#viewlogs').val() == 'haproxy-wi.error.log' || $('#viewlogs').val() == 'haproxy-wi.access.log' || $('#viewlogs').val() == 'fail2ban.log') {
 		showApacheLog($('#viewlogs').val());
 	} else {
 		var rows = $('#rows').val()
 		var grep = $('#grep').val()
+		var exgrep = $('#exgrep').val()
 		var hour = $('#time_range_out_hour').val()
 		var minut = $('#time_range_out_minut').val()
 		var hour1 = $('#time_range_out_hour1').val()
 		var minut1 = $('#time_range_out_minut1').val()
+		var viewlogs = $('#viewlogs').val()
+		var type = findGetParameter('type')
+		if (viewlogs == null){
+			viewlogs = findGetParameter('viewlogs')
+		}	
 		$.ajax( {
 			url: "options.py",
 			data: {
-				viewlogs: $('#viewlogs').val(),
+				viewlogs: viewlogs,
 				rows: rows,
 				grep: grep,
+				exgrep: exgrep,
 				hour: hour,
 				minut: minut,
 				hour1: hour1,
@@ -504,18 +573,43 @@ function viewLogs() {
 			type: "POST",
 			success: function( data ) {
 				$("#ajax").html(data);
-				window.history.pushState("View logs", "View logs", cur_url[0]+"?viewlogs="+$("#viewlogs").val()+
-																	'&rows='+rows+
-																	'&grep='+grep+
-																	'&hour='+hour+
-																	'&minut='+minut+
-																	'&hour1='+hour1+
-																	'&minut1='+minut1);
+				window.history.pushState("View logs", "View logs", cur_url[0] + "?type="+ type +
+						"&viewlogs=" + viewlogs +
+						'&rows=' + rows +
+						'&grep=' + grep +
+						'&exgrep=' + exgrep +
+						'&hour=' + hour +
+						'&minut=' + minut +
+						'&hour1=' + hour1 +
+						'&minut1=' + minut1);
 			}					
 		} );
 	}
 }
 $( function() {
+	$('a').click(function(e) {
+		try {
+			var cur_path = window.location.pathname;
+			var attr = $(this).attr('href');
+			if (typeof attr !== typeof undefined && attr !== false) {
+				$('title').text($(this).attr('title'));
+				history.pushState({}, '', $(this).attr('href'));
+				if ($(this).attr('href').split('#')[0] && $(this).attr('href').split('#')[0] != cur_path) {
+					window.history.go()
+				}
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	});
+	toastr.options.closeButton = true;
+	toastr.options.progressBar = true;
+	toastr.options.positionClass = 'toast-bottom-full-width';
+	toastr.options.timeOut = 25000;
+	toastr.options.extendedTimeOut = 50000;
+	$('#errorMess').click(function(){
+		$('#error').remove();
+	});
 	$( "#serv" ).on('selectmenuchange',function()  {
 		$("#show").css("pointer-events", "inherit");
 		$("#show").css("cursor", "pointer");
@@ -550,7 +644,7 @@ $( function() {
 		$(".footer").css("margin-left", "1%");
 		$(".show_menu").show();
 		$("#hide_menu").hide();
-		Cookies.set('hide_menu', 'hide', { expires: 365 });
+		Cookies.set('hide_menu', 'hide', { expires: 365, samesite: 'strict', secure: 'true' });
 	});
 	$( "#show_menu" ).click(function() {
 		$(".top-menu").show( "drop", "fast" );
@@ -560,9 +654,8 @@ $( function() {
 		$(".footer").css("margin-left", "207px");
 		$(".show_menu").hide();
 		$("#hide_menu").show();
-		Cookies.set('hide_menu', 'show', { expires: 365 });
-	});
-	
+		Cookies.set('hide_menu', 'show', { expires: 365, samesite: 'strict', secure: 'true' });
+	});	
 	var hideMenu = Cookies.get('hide_menu');
 	if (hideMenu == "show") {
 		$(".top-menu").show( "drop", "fast" );
@@ -675,13 +768,42 @@ $( function() {
 		  $("#label_select_all").text("Select all");
         }
     });
-
-	 $('#runtimeapiform').submit(function() {
-		showRuntime();
-		return false;
-	}); 
+	$('#changeCurrentGroup').click(function() {
+		$.ajax( {
+			url: "options.py",
+			data: {
+				getcurrentusergroup: 1,
+				token: $('#token').val()
+			},
+			type: "POST",
+			success: function( data ) {
+				if (data.indexOf('danger') != '-1') {
+					$("#ajax").html(data);
+				} else {
+					$('.alert-danger').remove();
+					$('#current-user-groups-form').html(data);
+					$( "select" ).selectmenu();
+					$( "#current-user-groups-dialog" ).dialog({
+						resizable: false,
+						height: "auto",
+						width: 290,
+						modal: true,
+						title: "Change a new current group",
+						buttons: {
+							"Change": function() {
+								$( this ).dialog( "close" );	
+								changeCurrentGroupF();
+							},
+							Cancel: function() {
+								$( this ).dialog( "close" );
+							}
+						  }
+					});					
+				} 
+			}
+		} );
+	 });
 	$('#auth').submit(function() {
-
 		let searchParams = new URLSearchParams(window.location.search)
 		if(searchParams.has('ref')) {
 			var ref = searchParams.get('ref');
@@ -698,11 +820,23 @@ $( function() {
 			success: function( data ) {
 				if (data.indexOf('ok') != '-1') {
 					window.location.replace(ref);
+					console.log(data)
+				} else if (data.indexOf('disabled') != '-1') {
+					$('.alert').show();
+					$('.alert').html(data);
 				} else if (data.indexOf('ban') != '-1') {
 					ban();				
 				} 
 			}
 		} );
+		return false;
+	});
+	$('#show_log_form').submit(function() {
+		if(cur_url[0] == '/app/logs.py') {
+			showLog();
+		} else {
+			viewLogs();
+		}
 		return false;
 	});
 	var showUpdates = $( "#show-updates" ).dialog({
@@ -782,6 +916,15 @@ $( function() {
 				});
 				$( "#tabs" ).tabs( "option", "active", 5 );
 			} );
+			$( ".services" ).on( "click", function() {
+				$('.menu li ul li').each(function () {
+					$(this).find('a').css('border-left', '0px solid #5D9CEB');
+					$(this).find('a').css('padding-left', '20px')
+					$(this).children(".services").css('padding-left', '30px');
+					$(this).children(".services").css('border-left', '4px solid #5D9CEB');
+				});
+				$( "#tabs" ).tabs( "option", "active", 6 );
+			} );
 			$( ".updatehapwi" ).on( "click", function() {
 				$('.menu li ul li').each(function () {
 					$(this).find('a').css('border-left', '0px solid #5D9CEB');
@@ -789,7 +932,7 @@ $( function() {
 					$(this).children(".updatehapwi").css('padding-left', '30px');
 					$(this).children(".updatehapwi").css('border-left', '4px solid #5D9CEB');
 				});
-				$( "#tabs" ).tabs( "option", "active", 6 );
+				$( "#tabs" ).tabs( "option", "active", 7 );
 			} );
 		} else {
 			$( ".runtime" ).on( "click", function() {
@@ -809,7 +952,16 @@ $( function() {
 					$(this).children(".admin").css('border-left', '4px solid #5D9CEB');
 				});
 				$( "#tabs" ).tabs( "option", "active", 2 );
-			} );			
+			} );
+			$( ".settings" ).on( "click", function() {
+				$('.menu li ul li').each(function () {
+					$(this).find('a').css('border-left', '0px solid #5D9CEB');
+					$(this).find('a').css('padding-left', '20px')
+					$(this).children(".settings").css('padding-left', '30px');
+					$(this).children(".settings").css('border-left', '4px solid #5D9CEB');
+				});
+				$( "#tabs" ).tabs( "option", "active", 4 );
+			} );
 			$( ".hap" ).on( "click", function() {
 				$('.menu li ul li').each(function () {
 					$(this).find('a').css('padding-left', '20px')
@@ -817,40 +969,28 @@ $( function() {
 					$(this).children(".hap").css('padding-left', '30px');
 					$(this).children(".hap").css('border-left', '4px solid #5D9CEB');
 				});
-				$( "#tabs" ).tabs( "option", "active", 4 );
+				$( "#tabs" ).tabs( "option", "active", 5 );
+			} );
+			$( ".hap1" ).on( "click", function() {
+				$('.menu li ul li').each(function () {
+					$(this).find('a').css('padding-left', '20px')
+					$(this).find('a').css('border-left', '0px solid #5D9CEB');
+					$(this).children(".hap1").css('padding-left', '30px');
+					$(this).children(".hap1").css('border-left', '4px solid #5D9CEB');
+				});
+				$( "#tabs" ).tabs( "option", "active", 6 );
+			} );
+			$( ".backup" ).on( "click", function() {
+				$('.menu li ul li').each(function () {
+					$(this).find('a').css('padding-left', '20px')
+					$(this).find('a').css('border-left', '0px solid #5D9CEB');
+					$(this).children(".backup").css('padding-left', '30px');
+					$(this).children(".backup").css('border-left', '4px solid #5D9CEB');
+				});
+				$( "#tabs" ).tabs( "option", "active", 7 );
 			} );
 		}
 	}
-	$( "#haproxyaddserv" ).on('selectmenuchange',function() {
-		$.ajax( {
-			url: "options.py",
-			data: {
-				get_hap_v: 1,
-				serv: $('#haproxyaddserv option:selected').val(),
-				token: $('#token').val()
-			},
-			type: "POST",
-			success: function( data ) {	
-				data = data.replace(/^\s+|\s+$/g,'');
-				if(data != '') {				
-					data = data+'-1';
-					$('#cur_hap_ver').text(data);
-					$('#install').text('Update');
-					$('#install').attr('title', 'Update HAProxy');
-					$('#syn_flood').checkboxradio('disable');
-					$('#syn_flood').prop( "checked", false );
-					$('#syn_flood').checkboxradio('refresh');
-				} else {
-					$('#cur_hap_ver').text('HAProxy has not installed');
-					$('#install').text('Install');
-					$('#install').attr('title', 'Install HAProxy');
-					$('#syn_flood').checkboxradio('enable');
-					$('#syn_flood').prop( "checked", true );
-					$('#syn_flood').checkboxradio('refresh');
-				}
-			}
-		} );
-	});
 });
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -884,93 +1024,13 @@ function replace_text(id_textarea, text_var) {
 	var text_val = str.substring(0, beg) + str.substring(end, len);
 	$(id_textarea).text(text_val);
 }
-function createList(color) {
-	if(color == 'white') {
-		list = $('#new_whitelist_name').val() 
-	} else {
-		list = $('#new_blacklist_name').val()
-	}
-	$.ajax( {
-		url: "options.py",
-		data: {
-			bwlists_create: list,
-			color: color,
-			group: $('#group').val(),
-			token: $('#token').val()
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajax").html(data); 
-			setTimeout(function() {
-						location.reload();
-					}, 2500 );			 
-		}
-	} );	
-}
-function editList(list, color) {
-	$.ajax( {
-		url: "options.py",
-		data: {
-			bwlists: list,
-			color: color,
-			group: $('#group').val(),
-			token: $('#token').val()
-		},
-		type: "POST",
-		success: function( data ) {
-			if (data.indexOf('danger') != '-1') {
-				$("#ajax").html(data);
-			} else {
-				$('.alert-danger').remove();
-				$('#edit_lists').text(data);
-				$( "#dialog-confirm" ).dialog({
-					resizable: false,
-					height: "auto",
-					width: 650,
-					modal: true,
-					title: "Edit "+color+" list "+list,
-					buttons: {
-						"Just save": function() {
-							$( this ).dialog( "close" );	
-							saveList('save', list, color);
-						},
-						"Save and restart": function() {
-							$( this ).dialog( "close" );	
-							saveList('restart', list, color);
-						},
-						Cancel: function() {
-							$( this ).dialog( "close" );
-						}
-					  }
-				});					
-			} 
-		}
-	} );	
-}
-function saveList(action, list, color) {
-	$.ajax( {
-		url: "options.py",
-		data: {
-			bwlists_save: list,
-			bwlists_content: $('#edit_lists').val(),
-			color: color,
-			group: $('#group').val(),
-			bwlists_restart: action,
-			token: $('#token').val()
-		},
-		type: "POST",
-		success: function( data ) {
-			$("#ajax").html(data); 
-		}
-	} );	
-}
 function createHistroy() {
 	try {
 		var get_history_array = JSON.parse(Cookies.get('history'));
 	}	
 	catch {
 		var get_history_array = ['login.py', 'login.py','login.py'];
-		Cookies.set('history', JSON.stringify(get_history_array), { expires: 1, path: '/app' });
+		Cookies.set('history', JSON.stringify(get_history_array), { expires: 10, path: '/app', samesite: 'strict', secure: 'true' });
 	}
 }
 function listHistroy() {	
@@ -980,25 +1040,28 @@ function listHistroy() {
 	var link_text = []
 	for(let i = 0; i < browse_history.length; i++){
 		if (i == 0) {
-			if(browse_history[0] == browse_history[1]) {
-				continue
-			}
 			browse_history[0] = browse_history[1];
 		}
-		if (i == 1) {			
-			if(browse_history[1] == browse_history[2]) {
-				continue
-			}
+		if (i == 1) {
 			browse_history[1] = browse_history[2]
 		}
 		if (i == 2) {
-			browse_history[2] = cur_url[0]
+			if(cur_url[1] !== undefined) {
+				browse_history[2] = cur_url[0] + '?' + cur_url[1]
+			}else {
+				browse_history[2] = cur_url[0]
+			}
 		}
-		$( function() {		
+		$( function() {
 			$('.menu li ul li').each(function () {
 				var link1 = $(this).find('a').attr('href');
 				var link2 = link1.split('/')[2]
-				if (browse_history[i] == link2) {				
+				if (browse_history[i] == link2) {
+					title[i] = $(this).find('a').attr('title');
+					link_text[i] = $(this).find('a').text();
+					history_link = '<li><a href="'+browse_history[i]+'" title="'+title[i]+'">'+link_text[i]+'</a></li>'
+					$('#browse_histroy').append(history_link);
+				} else if (browse_history[i].split('?')[0] == link2) {
 					title[i] = $(this).find('a').attr('title');
 					link_text[i] = $(this).find('a').text();
 					history_link = '<li><a href="'+browse_history[i]+'" title="'+title[i]+'">'+link_text[i]+'</a></li>'
@@ -1007,7 +1070,80 @@ function listHistroy() {
 			});
 		});
 	}
-	Cookies.set('history', JSON.stringify(browse_history), { expires: 1, path: '/app' });
+	Cookies.set('history', JSON.stringify(browse_history), { expires: 10, path: '/app', samesite: 'strict', secure: 'true' });
 }
 createHistroy()
 listHistroy()
+
+function changeCurrentGroupF(){
+	Cookies.remove('group');
+	Cookies.set('group', $('#newCurrentGroup').val(), { expires: 365, path: '/app', samesite: 'strict', secure: 'true' });
+	location.reload(); 
+}
+function sort_by_status() {
+	$('<div id="err_services" style="clear: both;"></div>').appendTo('.main');
+	$('<div id="good_services" style="clear: both;"></div>').appendTo('.main');
+	$('<div id="dis_services" style="clear: both;"></div>').appendTo('.main');
+	$(".good").prependTo("#good_services");
+	$(".err").prependTo("#err_services");
+	$(".dis").prependTo("#dis_services");
+	$('.group').remove();
+	$('.group_name').detach();
+	window.history.pushState("SMON Dashboard", "SMON Dashboard", cur_url[0]+"?action=view&sort=by_status");
+}
+function showSmon(action) {
+	var sort = '';
+	if (action == 'refresh') {
+		try {
+			var location = window.location.href;
+			var cur_url = '/app/' + location.split('/').pop();
+			cur_url = cur_url.split('?');
+			cur_url[1] = cur_url[1].split('#')[0];
+			sort = cur_url[1].split('&')[1];
+			sort = sort.split('=')[1];
+		} catch (e) {
+			sort = '';
+		}
+	}
+	$.ajax( {
+		url: "options.py",
+		data: {
+			showsmon: 1,
+			sort: sort,
+			token: $('#token').val()
+		},
+		type: "POST",
+		success: function( data ) {
+			if (data.indexOf('SMON error:') != '-1') {
+				toastr.error(data);
+			} else {
+				toastr.clear();
+				$("#smon_dashboard").html(data);
+				if (action == 'not_sort') {
+					window.history.pushState("SMON Dashboard", document.title, "smon.py?action=view");
+				} else {
+					window.history.pushState("SMON Dashboard", document.title, cur_url[0] + "?" + cur_url[1]);
+				}
+			}
+		}
+	} );
+}
+function updateTips( t ) {
+	var tips = $( ".validateTips" );
+	tips.text( t ).addClass( "alert-warning" );
+}
+function clearTips() {
+	var tips = $( ".validateTips" );
+	tips.html('Form fields tag "<span class="need-field">*</span>" are required.').removeClass( "alert-warning" );
+	allFields = $( [] ).add( $('#new-server-add') ).add( $('#new-ip') ).add( $('#new-port')).add( $('#new-username') ).add( $('#new-password') )
+	allFields.removeClass( "ui-state-error" );
+}
+function checkLength( o, n, min ) {
+	if ( o.val().length < min ) {
+		o.addClass( "ui-state-error" );
+		updateTips("Filed "+n+" is required");
+		return false;
+	} else {
+		return true;
+	}
+}

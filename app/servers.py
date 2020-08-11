@@ -1,41 +1,40 @@
 #!/usr/bin/env python3
-import http
-import cgi
-import sys
-import os
 import funct
 import sql
 from jinja2 import Environment, FileSystemLoader
-env = Environment(extensions=["jinja2.ext.do"],loader=FileSystemLoader('templates/'))
+env = Environment(extensions=["jinja2.ext.do"],loader=FileSystemLoader('templates/'), autoescape=True)
 template = env.get_template('servers.html')
 form = funct.form
 
 print('Content-type: text/html\n')
 funct.check_login()
-funct.page_for_admin(level = 2)
+funct.page_for_admin(level=2)
 try:
-	cookie = http.cookies.SimpleCookie(os.environ.get("HTTP_COOKIE"))
-	user_id = cookie.get('uuid')
-	user = sql.get_user_name_by_uuid(user_id.value)
-	servers = sql.get_dick_permit()
-	token = sql.get_token(user_id.value)
+	user, user_id, role, token, servers = funct.get_users_params()
 	ldap_enable = sql.get_setting('ldap_enable')
-except:
+	grafana, stderr = funct.subprocess_execute("service grafana-server status |grep Active |awk '{print $1}'")
+	user_group = funct.get_user_group(id=1)
+	settings = sql.get_setting('', all=1)
+except Exception as e:
 	pass
 
 
-output_from_parsed_template = template.render(title = "Servers manage",
-												role = sql.get_user_role_by_uuid(user_id.value),
+output_from_parsed_template = template.render(title = "Servers: ",
+												role = role,
 												user = user,
-												users = sql.select_users(),
+												users = sql.select_users(group=user_group),
 												groups = sql.select_groups(),
 												servers = sql.get_dick_permit(virt=1, disable=0),
 												roles = sql.select_roles(),
 												masters = sql.select_servers(get_master_servers=1, uuid=user_id.value),
-												group = sql.get_user_group_by_uuid(user_id.value),
-												sshs = sql.select_ssh(),
-												telegrams = sql.get_user_telegram_by_uuid(user_id.value),
+												group = user_group,
+												sshs = sql.select_ssh(group=user_group),
+												telegrams = sql.get_user_telegram_by_group(user_group),
 												token = token,
 												versions = funct.versions(),
+												settings = settings,
+												backups = sql.select_backups(),
+												grafana = ''.join(grafana),
+												page = "servers.py",
 												ldap_enable = ldap_enable)
 print(output_from_parsed_template)

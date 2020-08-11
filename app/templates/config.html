@@ -1,49 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<script src="/inc/jquery-linenumbers.js"></script>
+<link rel="stylesheet" href="/inc/codemirror/codemirror.css">
+<script src="/inc/codemirror/codemirror.js"></script>
+<script src="/inc/codemirror/nginx.js"></script>
+<script src="/inc/codemirror/haproxy.js"></script>
 <center>
+	{% if selects|length == 0 %}
+		{% include 'include/getstarted.html' %}
+	{% else %}
 	<h3>Choose server</h3>
 	<p>
 		<form action="{{ action }}" method="post">
 			<a class="ui-button ui-widget ui-corner-all" title="Return back" id="back" onclick="history.go(-2)">Back</a>
+			<input type="hidden" id="service" value="{{service|default('haproxy', true)}}" />
 			<select autofocus required name="serv" id="{{ select_id }}">
 				<option disabled>Choose server</option>
 					{% for select in selects %}
-						{% if keepalived %}
-							{% if select.1 == serv %}
-								<option value="{{ select.1 }}" selected>{{ select.0 }}</option>								
-							{% else %}
-								<option value="{{ select.1 }}">{{ select.0 }}</option>								
-							{% endif %}
-							{% if select.3 == serv %}
-								<option value="{{ select.3 }}" selected>{{ select.2 }}</option>
-							{% else %}
-								<option value="{{ select.3 }}">{{ select.2 }}</option>
-							{% endif %}
+						{% if select.2 == serv %}
+							<option value="{{ select.2 }}" selected>{{ select.1 }}</option>
 						{% else %}
-							{% if select.2 == serv %}
-								<option value="{{ select.2 }}" selected>{{ select.1 }}</option>
-							{% else %}
-								<option value="{{ select.2 }}">{{ select.1 }}</option>
-							{% endif %}
+							<option value="{{ select.2 }}">{{ select.1 }}</option>
 						{% endif %}
 					{% endfor %}
 			</select>
-			{% if not keepalived %}
-				<a class="ui-button ui-widget ui-corner-all" title="Show running config" onclick="showConfig()">Open</a>	
-				<a class="ui-button ui-widget ui-corner-all" title="Compare configs" onclick="showCompareConfigs()">Compare</a>	
+			{% if service != 'keepalived' %}
+				<a class="ui-button ui-widget ui-corner-all" title="Show running config" onclick="showConfig()">Open</a>
+				<a class="ui-button ui-widget ui-corner-all" title="View stat" onclick="openStats()">Stat</a>
+			{% endif %}
+			{% if service != 'keepalived' and service != 'nginx'%}
 				<a class="ui-button ui-widget ui-corner-all" title="Show map" onclick="showMap()">Map</a>	
-				<a class="ui-button ui-widget ui-corner-all" title="View stat" onclick="openStats()">Stat</a>	
+			{% endif %}
+			{% if service != 'keepalived' %}					
+				<a class="ui-button ui-widget ui-corner-all" title="Compare configs" onclick="showCompareConfigs()">Compare</a>	
 				{% if role <= 2 %}
 					<a class="ui-button ui-widget ui-corner-all" title="Show versions" onclick="openVersions()">Versions</a>	
 				{% endif %}
 			{% else %}
 				{% if role <= 2 %}
-				<button type="submit" value="open" name="open" class="btn btn-default" title="Edit running config">Edit</button>
+					<button type="submit" value="open" name="open" class="btn btn-default" title="Edit running config">Edit</button>
+					<a class="ui-button ui-widget ui-corner-all" title="Show versions" onclick="openVersions()">Versions</a>
 				{% endif %}
 			{% endif %}
 		</form>
 	</p>
+	{% endif %}
 	{% if not aftersave %}
 		{% if stderr or error %}
 			{% include 'include/errors.html' %}
@@ -51,19 +51,22 @@
 	{% endif %}
 	{% if config %}
 		{% if role <= 2 %}
-			<div id="config">
 				<h4>Config from {{ serv }}</h4>
-				<form action="{{ action }}" name="saveconfig" method="post">
+				</center>
+				<form action="{{ action }}" name="saveconfig" id="saveconfig" method="post">
 					<input type="hidden" value="{{ serv }}" name="serv"> 
 					<input type="hidden" value="{{ cfg }}.old" name="oldconfig"> 
-					<textarea name="config" class="config" rows="35" cols="100">{{ config }}</textarea> 
-					<p>
-					{% if not keepalived %}
+					<div style="margin-left: 23%;width: 60%;">
+						<textarea name="config" id="config_text_area" class="config" rows="35" cols="100">{{ config }}</textarea> 
+					</div>
+					<p>					
+					<center>
+					{% if service == 'haproxy' %}
 						<button type="submit" value="test" name="save" class="btn btn-default">Just test</button>
 					{% endif %}
 						<button type="submit" value="save" name="save" class="btn btn-default">Just save</button>
 						<button type="submit" value="" name="" class="btn btn-default">Save and restart</button>
-					{% if not keepalived %}
+					{% if service != 'keepalived' %}
 						<button type="submit" value="reload" name="save" class="btn btn-default">Save and reload</button>
 					{% endif %}
 					</p>
@@ -71,7 +74,6 @@
 				{% if note %}
 					<div class="alert alert-info"><b>Note:</b> If you reconfigure Master server, Slave will reconfigured automatically</div>
 				{% endif %}
-			</div>
 		{% endif %}
 	{% endif %}
 	{% if aftersave %}
@@ -82,19 +84,31 @@
 			<div class="alert alert-success">Config is ok</div>
 			<a href="viewsttats.py?serv={{ serv }}" target="_blank" title="View stats">Go to view stats</a>
 		{% endif %}
-		<script>window.history.pushState("Config", "Config", cur_url[0])</script>
 	{% endif %}
 	</center>
 <script> 
 	if (cur_url[1].split('&')[1] == 'showMap') {
 		showMap();		
 	}
-	if (cur_url[1].split('&')[1] == 'showCompare') {
+	if (cur_url[1].split('&')[1] == 'showCompare' || cur_url[1].split('&')[2] == 'showCompare') {
 		showCompareConfigs();		
 	}
-	if (cur_url[1].split('&')[1] == 'showConfig') {
+	if (cur_url[1].split('&')[2] == 'showConfig') {
 		showConfig();		
 	}	
-	$('textarea').linenumbers({col_width: '25px'});
+	if (cur_url[1].split('&')[0] == 'service=haproxy' || cur_url[1].split('&')[0] == 'service=None') {
+		var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("config_text_area"), {mode: "haproxy", lineNumbers: true});
+	} else {
+		var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("config_text_area"), {mode: "nginx", lineNumbers: true});
+	}
+</script>
+<style>
+.CodeMirror {
+  line-height: 1.2em;
+  height: 50%;
+}
+</style>
+<script>
+	myCodeMirror.refresh();
 </script>
 {% endblock %}
